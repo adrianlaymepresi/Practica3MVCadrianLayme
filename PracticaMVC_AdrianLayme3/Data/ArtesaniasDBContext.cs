@@ -13,6 +13,19 @@ namespace PracticaMVC_AdrianLayme3.Data
         public DbSet<DetallePedidoModel> DetallePedidos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // PARA LOS DECIMALES
+            modelBuilder.Entity<ProductoModel>()
+                .Property(p => p.Precio)
+                .HasColumnType("decimal(8,2)");
+
+            modelBuilder.Entity<PedidoModel>()
+                .Property(p => p.MontoTotal)
+                .HasColumnType("decimal(9,2)");
+
+            modelBuilder.Entity<DetallePedidoModel>()
+                .Property(d => d.PrecioUnitario)
+                .HasColumnType("decimal(8,2)");
+
             // Configuración de la relación entre Pedido y Cliente (Many-to-One)
             // Un Pedido tiene Un Cliente, y Un Cliente tiene Muchos Pedidos
             modelBuilder.Entity<PedidoModel>()
