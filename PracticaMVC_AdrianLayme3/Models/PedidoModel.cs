@@ -9,7 +9,7 @@ namespace PracticaMVC_AdrianLayme3.Models
         [Required] // Validacion externa
         public DateTime FechaPedido { get; set; }
 
-        [Display(Name = "Cliente")]
+        [Display(Name = "Informacion Cliente")]
         [Required, Range(1, int.MaxValue)] // 1 (lo minimo)
         public int IdCliente { get; set; }
 
@@ -22,7 +22,7 @@ namespace PracticaMVC_AdrianLayme3.Models
         public decimal MontoTotal { get; set; }
 
         // Un pedido pertenece a un solo cliente.
-        public ClienteModel Cliente { get; set; }
+        public ClienteModel? Cliente { get; set; }
         // Un pedido puede tener muchos detalles de pedido.
         public ICollection<DetallePedidoModel>? DetallePedidos { get; set; }
     }

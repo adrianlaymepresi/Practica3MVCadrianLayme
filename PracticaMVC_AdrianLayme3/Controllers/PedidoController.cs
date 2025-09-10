@@ -48,7 +48,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
         // GET: Pedido/Create
         public IActionResult Create()
         {
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id");
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nombre");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", pedidoModel.IdCliente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nombre", pedidoModel.IdCliente);
             return View(pedidoModel);
         }
 
@@ -82,7 +82,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", pedidoModel.IdCliente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nombre", pedidoModel.IdCliente);
             return View(pedidoModel);
         }
 
@@ -118,7 +118,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", pedidoModel.IdCliente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nombre", pedidoModel.IdCliente);
             return View(pedidoModel);
         }
 

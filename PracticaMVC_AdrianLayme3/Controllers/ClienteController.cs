@@ -54,7 +54,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Email,Direccion")] ClienteModel clienteModel)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,CarnetIdentidad,Email,Direccion")] ClienteModel clienteModel)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Email,Direccion")] ClienteModel clienteModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,CarnetIdentidad,Email,Direccion")] ClienteModel clienteModel)
         {
             if (id != clienteModel.Id)
             {

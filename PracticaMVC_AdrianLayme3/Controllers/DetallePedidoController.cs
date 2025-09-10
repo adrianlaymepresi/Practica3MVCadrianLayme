@@ -49,8 +49,8 @@ namespace PracticaMVC_AdrianLayme3.Controllers
         // GET: DetallePedido/Create
         public IActionResult Create()
         {
-            ViewData["IdPedido"] = new SelectList(_context.Pedidos, "Id", "Id");
-            ViewData["IdProducto"] = new SelectList(_context.Productos, "Id", "Id");
+            ViewData["IdPedido"] = new SelectList(_context.Pedidos, "Id", "Direccion");
+            ViewData["IdProducto"] = new SelectList(_context.Productos, "Id", "Nombre");
             return View();
         }
 
@@ -67,8 +67,8 @@ namespace PracticaMVC_AdrianLayme3.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdPedido"] = new SelectList(_context.Pedidos, "Id", "Id", detallePedidoModel.IdPedido);
-            ViewData["IdProducto"] = new SelectList(_context.Productos, "Id", "Id", detallePedidoModel.IdProducto);
+            ViewData["IdPedido"] = new SelectList(_context.Pedidos, "Id", "Direccion", detallePedidoModel.IdPedido);
+            ViewData["IdProducto"] = new SelectList(_context.Productos, "Id", "Nombre", detallePedidoModel.IdProducto);
             return View(detallePedidoModel);
         }
 
@@ -85,8 +85,8 @@ namespace PracticaMVC_AdrianLayme3.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdPedido"] = new SelectList(_context.Pedidos, "Id", "Id", detallePedidoModel.IdPedido);
-            ViewData["IdProducto"] = new SelectList(_context.Productos, "Id", "Id", detallePedidoModel.IdProducto);
+            ViewData["IdPedido"] = new SelectList(_context.Pedidos, "Id", "Direccion", detallePedidoModel.IdPedido);
+            ViewData["IdProducto"] = new SelectList(_context.Productos, "Id", "Nombre", detallePedidoModel.IdProducto);
             return View(detallePedidoModel);
         }
 
@@ -122,8 +122,8 @@ namespace PracticaMVC_AdrianLayme3.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdPedido"] = new SelectList(_context.Pedidos, "Id", "Id", detallePedidoModel.IdPedido);
-            ViewData["IdProducto"] = new SelectList(_context.Productos, "Id", "Id", detallePedidoModel.IdProducto);
+            ViewData["IdPedido"] = new SelectList(_context.Pedidos, "Id", "Direccion", detallePedidoModel.IdPedido);
+            ViewData["IdProducto"] = new SelectList(_context.Productos, "Id", "Nombre", detallePedidoModel.IdProducto);
             return View(detallePedidoModel);
         }
 
