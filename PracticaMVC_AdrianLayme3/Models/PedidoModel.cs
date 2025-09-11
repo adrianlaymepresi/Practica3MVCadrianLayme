@@ -18,7 +18,7 @@ namespace PracticaMVC_AdrianLayme3.Models
         public string Direccion { get; set; }
 
         [Display(Name = "Monto Total (Bs)")]
-        [Required, Range(0.01, 9999999.99)] // 0.01 a 9 999 999.99 Bs (lo minimo)
+        [Required, Range(0.00, 9999999.99)] // 0.01 a 9 999 999.99 Bs (lo minimo)
         public decimal MontoTotal { get; set; }
 
         // Un pedido pertenece a un solo cliente.
