@@ -126,9 +126,13 @@
                                 <td class="text-white">@item.Direccion</td>
                                 <td class="text-white">@item.MontoTotal.ToString("0.00")</td>
                                 <td class="text-white">@item.Cliente?.Nombre</td>
-                                <td class="d-flex justify-content-center gap-2">
+                                <td class="d-flex justify-content-center gap-2 flex-wrap">
+                                    <a class="btn btn-sm btn-warning"
+                                       asp-controller="DetallePedido"
+                                       asp-action="Index"
+                                       asp-route-pedidoId="@item.Id">+ Detalle Pedido 📦</a>
                                     <a class="btn btn-sm btn-success" asp-action="Edit" asp-route-id="@item.Id">✅ Editar</a>
-                                    <a class="btn btn-sm btn-secondary" asp-action="Details" asp-route-id="@item.Id">🔎 Detalles</a>
+                                    <a class="btn btn-sm btn-secondary" asp-action="Details" asp-route-id="@item.Id">🔎 Informacion</a>
                                     <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">🗑️ Eliminar</a>
                                 </td>
                             </tr>

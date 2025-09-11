@@ -30,6 +30,12 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
+    pattern: "{controller=Producto}/{action=Index}/{id?}");
+
+/* ANTESS
+app.MapControllerRoute(
+    name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+*/
 
 app.Run();
