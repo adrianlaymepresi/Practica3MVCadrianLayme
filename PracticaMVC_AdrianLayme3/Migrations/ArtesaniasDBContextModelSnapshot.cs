@@ -72,6 +72,11 @@ namespace PracticaMVC_AdrianLayme3.Migrations
                     b.Property<decimal>("PrecioUnitario")
                         .HasColumnType("decimal(8,2)");
 
+                    b.Property<decimal>("Subtotal")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("decimal(12,2)")
+                        .HasComputedColumnSql("[Cantidad] * [PrecioUnitario]", true);
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdPedido");

@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Eliminar Detalle de Pedido";
-    var subtotal = (Model.Cantidad * Model.PrecioUnitario).ToString("0.00");
 }
 
 <div class="container-fluid">
@@ -36,7 +35,7 @@
                         <td class="text-white">@Model.Producto?.Nombre</td>
                         <td class="text-white">@Model.PrecioUnitario.ToString("0.00")</td>
                         <td class="text-white">@Model.Cantidad</td>
-                        <td class="text-white">@subtotal</td>
+                        <td class="text-white">@Model.Subtotal.ToString("0.00")</td>
                     </tr>
                 </tbody>
             </table>
@@ -65,8 +64,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-
-                <!-- Formulario real de eliminación -->
                 <form asp-action="Delete" method="post" class="m-0">
                     <input type="hidden" asp-for="Id" />
                     <button type="submit" class="btn btn-danger">Eliminar definitivamente</button>

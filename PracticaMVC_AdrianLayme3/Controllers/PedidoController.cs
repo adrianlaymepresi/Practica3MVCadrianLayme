@@ -103,7 +103,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pedidoModel == null) return NotFound();
 
-            // Mostrar el monto actualizado
+            // Monto actualizado (suma de Subtotal)
             pedidoModel.MontoTotal = await CalcularMontoTotalAsync(pedidoModel.Id);
 
             return View(pedidoModel);
@@ -125,7 +125,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
             ValidarDireccion(pedidoModel);
 
             // Se ignora el MontoTotal posteado; se calcula siempre
-            pedidoModel.MontoTotal = await CalcularMontoTotalAsync(0); // 0 porque aún no existe (sin detalles)
+            pedidoModel.MontoTotal = 0m;
 
             if (!ModelState.IsValid) return View(pedidoModel);
 
@@ -158,9 +158,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (pedidoModel == null) return NotFound();
 
-            // Monto actualizado
             pedidoModel.MontoTotal = await CalcularMontoTotalAsync(pedidoModel.Id);
-
             return View(pedidoModel);
         }
 
@@ -175,7 +173,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
             await ValidarClienteAsync(pedidoModel);
             ValidarDireccion(pedidoModel);
 
-            // Monto siempre desde DetallePedidos
+            // Monto siempre desde DetallePedidos (Subtotal)
             pedidoModel.MontoTotal = await CalcularMontoTotalAsync(pedidoModel.Id);
 
             if (!ModelState.IsValid) return View(pedidoModel);
@@ -219,7 +217,6 @@ namespace PracticaMVC_AdrianLayme3.Controllers
             if (pedidoModel == null) return NotFound();
 
             pedidoModel.MontoTotal = await CalcularMontoTotalAsync(pedidoModel.Id);
-
             return View(pedidoModel);
         }
 
@@ -238,10 +235,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PedidoModelExists(int id)
-        {
-            return _context.Pedidos.Any(e => e.Id == id);
-        }
+        private bool PedidoModelExists(int id) => _context.Pedidos.Any(e => e.Id == id);
 
         // =========================
         //   Buscador clientes (Modal)
@@ -368,15 +362,11 @@ namespace PracticaMVC_AdrianLayme3.Controllers
         {
             if (pedidoId <= 0) return 0m;
 
-            var detalles = await _context.DetallePedidos
+            // AHORA: sumamos Subtotal (columna computada)
+            var total = await _context.DetallePedidos
                 .AsNoTracking()
                 .Where(d => d.IdPedido == pedidoId)
-                .Select(d => new { d.Cantidad, d.PrecioUnitario })
-                .ToListAsync();
-
-            decimal total = 0m;
-            foreach (var d in detalles)
-                total += d.Cantidad * d.PrecioUnitario;
+                .SumAsync(d => (decimal?)d.Subtotal) ?? 0m;
 
             return Math.Round(total, 2, MidpointRounding.AwayFromZero);
         }

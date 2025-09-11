@@ -21,9 +21,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
             _context = context;
         }
 
-        // =========================
         // Index filtrado por pedido + búsqueda/paginación por nombre de producto
-        // =========================
         public async Task<IActionResult> Index(int pedidoId, int pagina = 1, int cantidadRegistrosPorPagina = 5, string q = "")
         {
             if (pedidoId < 1) return NotFound();
@@ -92,9 +90,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
             return View(items);
         }
 
-        // =========================
-        // Create (IdPedido viene por query, Producto por modal)
-        // =========================
+        // Create
         public async Task<IActionResult> Create(int idPedido)
         {
             if (idPedido < 1) return NotFound();
@@ -124,7 +120,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
 
             await ValidarDetalleAsync(model, isEdit: false);
 
-            // Asignar precio del producto ANTES de IsValid para evitar rango 0.00
+            // Asignar precio del producto ANTES de validar rango
             if (model.IdProducto > 0)
             {
                 var prod = await _context.Productos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == model.IdProducto);
@@ -145,9 +141,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
             return RedirectToAction(nameof(Index), new { pedidoId = model.IdPedido });
         }
 
-        // =========================
-        // Edit (puede cambiar producto vía modal)
-        // =========================
+        // Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -168,12 +162,11 @@ namespace PracticaMVC_AdrianLayme3.Controllers
         {
             if (id != model.Id) return NotFound();
 
-            // El precio es del producto, ignoramos lo que venga del form
+            // El precio es del producto
             ModelState.Remove(nameof(DetallePedidoModel.PrecioUnitario));
 
             await ValidarDetalleAsync(model, isEdit: true);
 
-            // Asignar precio del producto
             if (model.IdProducto > 0)
             {
                 var prod = await _context.Productos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == model.IdProducto);
@@ -208,9 +201,23 @@ namespace PracticaMVC_AdrianLayme3.Controllers
             }
         }
 
-        // =========================
-        // Delete (mantenemos, y recalculamos total)
-        // =========================
+        // Details
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var detalle = await _context.DetallePedidos
+                .AsNoTracking()
+                .Include(d => d.Pedido).ThenInclude(p => p.Cliente)
+                .Include(d => d.Producto)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (detalle == null) return NotFound();
+
+            return View(detalle);
+        }
+
+        // Delete
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -243,9 +250,7 @@ namespace PracticaMVC_AdrianLayme3.Controllers
 
         private bool DetallePedidoModelExists(int id) => _context.DetallePedidos.Any(e => e.Id == id);
 
-        // =========================
-        //  AJAX: Buscar productos para el modal
-        // =========================
+        // AJAX: Buscar productos para el modal
         [HttpGet]
         public async Task<IActionResult> BuscarProductos(string q = "", int pagina = 1, int cantidadRegistrosPorPagina = 5)
         {
@@ -309,24 +314,18 @@ namespace PracticaMVC_AdrianLayme3.Controllers
             });
         }
 
-        // =========================
-        //  Validaciones / Helpers
-        // =========================
+        // Validaciones / Helpers
         private async Task ValidarDetalleAsync(DetallePedidoModel m, bool isEdit)
         {
-            // Pedido
             if (m.IdPedido < 1 || !await _context.Pedidos.AsNoTracking().AnyAsync(p => p.Id == m.IdPedido))
                 ModelState.AddModelError(nameof(DetallePedidoModel.IdPedido), "El pedido no existe.");
 
-            // Producto
             if (m.IdProducto < 1 || !await _context.Productos.AsNoTracking().AnyAsync(p => p.Id == m.IdProducto))
                 ModelState.AddModelError(nameof(DetallePedidoModel.IdProducto), "Debe seleccionar un producto válido.");
 
-            // Cantidad (máx 99.999)
             if (m.Cantidad < 1 || m.Cantidad > 99_999)
                 ModelState.AddModelError(nameof(DetallePedidoModel.Cantidad), "Cantidad permitida: 1 a 99.999.");
 
-            // Unicidad producto por pedido
             if (m.IdPedido > 0 && m.IdProducto > 0)
             {
                 bool existe = await _context.DetallePedidos.AsNoTracking()
@@ -338,11 +337,11 @@ namespace PracticaMVC_AdrianLayme3.Controllers
 
         private async Task RecalcularMontoPedidoAsync(int pedidoId)
         {
-            // IMPORTANTE: evitar DefaultIfEmpty(0m), usar suma sobre decimal? y coalesce
+            // Ahora sumamos el Subtotal (computado en BD)
             var total = await _context.DetallePedidos
                 .AsNoTracking()
                 .Where(d => d.IdPedido == pedidoId)
-                .SumAsync(d => (decimal?)d.PrecioUnitario * d.Cantidad) ?? 0m;
+                .SumAsync(d => (decimal?)d.Subtotal) ?? 0m;
 
             var pedido = await _context.Pedidos.FirstOrDefaultAsync(p => p.Id == pedidoId);
             if (pedido != null)

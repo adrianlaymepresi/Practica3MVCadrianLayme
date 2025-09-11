@@ -4,7 +4,6 @@
     ViewData["Title"] = "Detalles del Detalle de Pedido";
     var pedido = Model.Pedido;
     var producto = Model.Producto;
-    var subtotal = (Model.Cantidad * Model.PrecioUnitario).ToString("0.00");
 }
 
 <div class="container-fluid">
@@ -47,7 +46,7 @@
             <div class="col-12 col-md-3">
                 <div class="border rounded p-3 h-100" style="border-color:#2b2f33 !important;">
                     <div class="text-secondary small">Subtotal (Bs)</div>
-                    <div class="fw-medium text-white">@subtotal</div>
+                    <div class="fw-medium text-white">@Model.Subtotal.ToString("0.00")</div>
                 </div>
             </div>
 

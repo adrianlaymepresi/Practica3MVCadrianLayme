@@ -1,5 +1,6 @@
 ﻿using PracticaMVC_AdrianLayme3.Controllers;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PracticaMVC_AdrianLayme3.Models
 {
@@ -21,6 +22,10 @@ namespace PracticaMVC_AdrianLayme3.Models
         [Display(Name = "Precio Unitario (Bs)")]
         [Required, Range(0.01, 999999.99)] // 0.01 a 999 999.99 Bs (lo minimo)
         public decimal PrecioUnitario { get; set; }
+
+        [Display(Name = "Subtotal (Bs)")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)] // lo calcula la BD
+        public decimal Subtotal { get; set; }
 
         public PedidoModel? Pedido { get; set; }
         public ProductoModel? Producto { get; set; }

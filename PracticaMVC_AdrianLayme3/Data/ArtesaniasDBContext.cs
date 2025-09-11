@@ -26,6 +26,12 @@ namespace PracticaMVC_AdrianLayme3.Data
                 .Property(d => d.PrecioUnitario)
                 .HasColumnType("decimal(8,2)");
 
+            // Subtotal como columna computada y almacenada (SQL Server)
+            modelBuilder.Entity<DetallePedidoModel>()
+                .Property(d => d.Subtotal)
+                .HasColumnType("decimal(12,2)")
+                .HasComputedColumnSql("[Cantidad] * [PrecioUnitario]", stored: true);
+
             // Configuración de la relación entre Pedido y Cliente (Many-to-One)
             // Un Pedido tiene Un Cliente, y Un Cliente tiene Muchos Pedidos
             modelBuilder.Entity<PedidoModel>()

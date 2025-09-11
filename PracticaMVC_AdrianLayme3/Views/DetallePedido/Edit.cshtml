@@ -46,20 +46,15 @@
                     @Html.DisplayNameFor(m => m.Cantidad)
                     <span id="contador_cant" class="badge rounded-pill bg-secondary ms-2">5 restantes</span>
                 </label>
-                <input asp-for="Cantidad"
-                       id="Cantidad"
-                       class="form-control"
-                       type="text"
-                       inputmode="numeric"
-                       maxlength="5"
+                <input asp-for="Cantidad" id="Cantidad" class="form-control" type="text" inputmode="numeric" maxlength="5"
                        oninput="this.value=this.value.replace(/\D/g,'').slice(0,5); actualizarCant();" />
                 <div class="small text-secondary">Máximo permitido: 99.999</div>
                 <span asp-validation-for="Cantidad" class="text-danger"></span>
             </div>
 
             <div class="col-12 col-md-6">
-                <label class="form-label m-0">Subtotal (Bs)</label>
-                <input id="Subtotal" class="form-control" type="text" readonly value="@((Model.Cantidad * Model.PrecioUnitario).ToString("0.00"))" />
+                <label asp-for="Subtotal" class="form-label m-0">@Html.DisplayNameFor(m => m.Subtotal)</label>
+                <input asp-for="Subtotal" id="Subtotal" class="form-control" readonly />
             </div>
 
             <div class="col-12 d-flex justify-content-center gap-2 mt-2">
@@ -70,7 +65,7 @@
     </div>
 </div>
 
-<!-- Modal Buscar Producto (igual que en Create) -->
+<!-- Modal Buscar Producto (igual a Create) -->
 <div class="modal fade" id="modalBuscarProducto" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content" style="background:#0f1113; color:#f8f9fa; border:1px solid #2b2f33;">
